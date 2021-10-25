@@ -1,0 +1,5 @@
+set GoogleCalendarApiTest_ApiKey=PutYourApiHere
+set GoogleCalendarApiTest_CalendarId=PutYourCalendarIdHere
+
+set
+pause

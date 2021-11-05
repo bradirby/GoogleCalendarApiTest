@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Google.Apis.Calendar.v3;
 using GoogleApiTest;
@@ -12,11 +13,10 @@ namespace CalendarApiTests
 
         [Test]
         [Explicit]
-        public void CreateCalSvcWithApiKey()
+        public void GetCalendarService()
         {
             try
             {
-
                 var apiKey = Environment.GetEnvironmentVariable("GoogleCalendarApiTest_ApiKey");
                 Assert.IsFalse(string.IsNullOrEmpty(apiKey), "Could not find apiKey");
 
@@ -24,7 +24,7 @@ namespace CalendarApiTests
                 var calMgr = GoogleApiManagerFactory.GetManagerUsingApiKey(appName, apiKey);
 
                 string[] scopes = { CalendarService.Scope.CalendarReadonly };
-                var svc = calMgr.GetCalendarService(scopes);
+                var svc = calMgr.GetCalendarService();
 
                 var calendarId = Environment.GetEnvironmentVariable("GoogleCalendarApiTest_CalendarId");
                 Assert.IsFalse(string.IsNullOrEmpty(calendarId), "Could not find calendarId");
@@ -58,7 +58,10 @@ namespace CalendarApiTests
                 var result = discoverySvc.Apis.List().ExecuteAsync().Result;
 
                 Assert.IsNotNull(result);
-                Assert.Greater(0, result.Items.Count);
+                Assert.Greater(result.Items.Count, 0);
+
+                var serviceLst = result.Items.Select(i => i.Description).ToList();
+                var calServices = serviceLst.Where(s => s.Contains("calendar")).ToList();
             }
             catch (Exception ex)
             {

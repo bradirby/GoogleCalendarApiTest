@@ -82,7 +82,7 @@ namespace GoogleApiTest
         }
 
 
-        public CalendarService GetCalendarService(string[] scopes)
+        public CalendarService GetCalendarService()
         {
             try
             {
